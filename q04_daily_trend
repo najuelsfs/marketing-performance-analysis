@@ -1,0 +1,8 @@
+SELECT
+  DATE(created_at) AS order_date,
+  COUNT(DISTINCT order_id) AS orders,
+  SUM(sale_price) AS revenue,
+  SAFE_DIVIDE(SUM(sale_price), COUNT(DISTINCT order_id)) AS avg_order_value
+FROM `bigquery-public-data.thelook_ecommerce.order_items`
+GROUP BY order_date
+ORDER BY order_date;
