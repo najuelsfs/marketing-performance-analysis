@@ -1,0 +1,6 @@
+SELECT
+  traffic_source,
+  COUNT(*) AS users
+FROM `bigquery-public-data.thelook_ecommerce.users`
+GROUP BY traffic_source
+ORDER BY users DESC;
