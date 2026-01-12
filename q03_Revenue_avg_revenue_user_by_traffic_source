@@ -1,0 +1,17 @@
+WITH user_revenue AS (
+  SELECT
+    user_id,
+    SUM(sale_price) AS total_revenue
+  FROM `bigquery-public-data.thelook_ecommerce.order_items`
+  GROUP BY user_id
+)
+SELECT
+  u.traffic_source,
+  COUNT(DISTINCT u.id) AS users,
+  SUM(ur.total_revenue) AS revenue,
+  AVG(ur.total_revenue) AS avg_revenue_per_user
+FROM `bigquery-public-data.thelook_ecommerce.users` u
+LEFT JOIN user_revenue ur
+  ON u.id = ur.user_id
+GROUP BY u.traffic_source
+ORDER BY revenue DESC;
