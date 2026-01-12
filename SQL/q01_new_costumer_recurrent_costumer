@@ -1,0 +1,18 @@
+WITH user_revenue AS (
+  SELECT
+    user_id,
+    COUNT(DISTINCT order_id) AS orders,
+    SUM(sale_price) AS total_revenue
+  FROM `bigquery-public-data.thelook_ecommerce.order_items`
+  GROUP BY user_id
+)
+SELECT
+  CASE
+    WHEN orders = 1 THEN 'One-time'
+    ELSE 'Repeat'
+  END AS customer_type,
+  COUNT(*) AS users,
+  SUM(total_revenue) AS revenue,
+  AVG(total_revenue) AS avg_revenue_per_user
+FROM user_revenue
+GROUP BY customer_type;
